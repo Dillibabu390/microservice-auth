@@ -1,0 +1,25 @@
+server:
+  port: 8090
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: examiner-service
+          uri: lb://EXAMINER-SERVICE
+          predicates:
+            - Path=/baunit/**
+          filters:
+            - AuthenticationFilter
+
+        - id: identity-service
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/auth/**
+
+  application:
+    name: EXAMINER-GATEWAY
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka/
